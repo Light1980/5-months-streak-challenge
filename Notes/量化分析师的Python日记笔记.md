@@ -552,3 +552,37 @@ sam = boy()
 
 # 那么sam和peter有一样的属性和方法，可以说，“他们真是一个模子刻出来的！”
 ```
+
+# 第3天
+
+## NumPy是什么？
+
+### 引入NumPy（Numeric Python）
+
+```python
+import numpy
+
+numpy.version.full_version
+
+...
+
+'1.8.0'
+```
+
+**注意**
+
+Python的外部扩展成千上万，在使用中很可能会import好几个外部扩展模块，如果某个模块包含的属性和方法与另一个模块同名，就必须使用import module来避免名字的冲突。即所谓的**名字空间（namespace）混淆**了，所以这前缀最好还是带上。
+
+但我们可以为模块添加**别名**
+
+```python
+import numpy as np
+
+np.version.full_version
+
+...
+
+'1.8.0'
+```
+
+## 初窥NumPy对象：数组
