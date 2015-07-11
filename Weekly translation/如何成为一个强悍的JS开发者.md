@@ -1,12 +1,14 @@
 > 原文地址[How to Become a Great JavaScript Developer](http://blog.ustunozgur.com/javascript/programming/books/videos/2015/06/17/how_to_be_a_great_javascript_software_developer.html)
 
+## Introduction
+
 When I was growing up, my interests spanned various, seemingly unrelated fields. I loved maths as much as I loved history. I aimed to be a Renaissance man -a polymath-, that excelled at multiple fields. This turned out to be an arduous task and suddenly I faced the danger of being a jack of all trades, master of none.
 
 在我的成长过程中，对许多领域的知识都很有兴趣，甚至有些是风马牛不相及的。我热爱数学，却也耽于历史。我曾志在成为一个文艺复兴式的人([Renaissance man](https://en.wikipedia.org/wiki/Renaissance_Man))——一个博文广记的学者([Polymath](https://en.wikipedia.org/wiki/Polymath))，在数个领域都佼佼有成。这个理想在后来被验证为是通往一条险峻的道路。我在忽然间意识到，自己恐怕会成一个博而不精，事事浅尝辄止而未有所得的庸人。
 
 I started thinking about specializing in certain fields so that I could at least be “a jack of all trades, master of some” man, if not a Renaissance one. How could I specialize in a field while retaining the vast knowledge required to do software development?
 
-我开始考虑让自己能在某个具体领域有所专擅，从而使自己在无法成为一个文艺复兴式大神时，至少可以是一个“事晓大略，专务精熟”的人。我是如何在软件开发这个要求复杂知识储备的行业中进行领域的具体化的呢？
+我开始考虑让自己能在某个具体领域有所专擅，从而使自己在无法成为一个文艺复兴式大神时，至少可以是一个“事晓大略，专务精熟”的人。我是如何在软件开发这个要求复杂知识储备的行业中进行领域的专业化的呢？
 
 In this post, I outline the techniques and resources I used to become a good JavaScript developer, based on my experience in the last 5 years.
 
@@ -17,7 +19,7 @@ Most of the web developers nowadays face the same problem: They have to excel at
 近来，大多数网页开发者都面临着同样的问题：他们不得不去胜任多个领域的工作，从数据库建设到后端架构开发，从后端架构开发到前端用户界面设计，从前端用户界面设计到利用CSS进行UI打磨。
 
 TL;DR Version
-下文的简要总结版
+正文的简要总结版
 
 + Start with reading books as they give you distilled information.
 Learn fundamental libraries such as jQuery, underscore, Backbone; but also read their source codes.
@@ -30,16 +32,16 @@ Learn fundamental libraries such as jQuery, underscore, Backbone; but also read 
 
 + Read through the new versions of the standard, and start using the latest additions to the language.
 
-  多多阅读新版本的标准，在编程中试着去运用语言的新特性。
+  多多阅读新版本的ECMAScript标准文档，在编程中试着去运用语言的新特性。
   
 + Follow the web resources in batch, through digests or blogs which you frequent once a week or conference and educational videos.
 Conclusion
 
-  关注网络上的各类资源，从文章摘要到博客，或者是一些大会录像（比如JSconf）与教学视频。
+  关注网络上的各类资源，比如文章摘要与技术博客，或者是一些大会录像（比如JSconf）与教学视频。
 
 
 
-正文，不译了。
+正文就不多译了，精髓基本都在上面，细枝末节的东西则自行取用比较好。
 
 ## Read Books
 
