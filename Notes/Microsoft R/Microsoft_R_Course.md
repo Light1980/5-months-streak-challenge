@@ -951,8 +951,323 @@ Levels: S < M < L
 
 + Ordered factors: ordered = TRUE. Catering to both nominal and ordinal variables
 
+### Extra knowledge from labs
+
+[summary()](http://www.rdocumentation.org/packages/base/functions/summary)
+: This function could produce result summaries of the results of various model fitting functions.
+ > ``` r
+ > # Defintion of survey_vector and survey_factor
+ > survey_vector <- c("R", "L", "L", "R", "R")
+ > survey_factor <- factor(survey_vector, levels = c("R", "L"), labels = c("Right", "Left"))
+ >
+ > # Summarize survey_vector
+ > summary(survey_vector)
+ > Length     Class      Mode 
+ >     5 character character 
+ >
+ > # Summarize survey_factor
+ > summary(survey_factor)
+ >Right  Left 
+ >3        2
+ >```
+
 ## Further Readings
 
 + [r-project/factors](https://cran.r-project.org/doc/manuals/R-intro.html#Factors)
 
 + [stat.ethz.chse/factors](https://stat.ethz.ch/R-manual/R-devel/library/base/html/factor.html)
+
+# Module 5: Lists
+
+## Create and name lists
+
+### Features
+
++ Vector: 1D, same type
+
++ Matrix: 2D, same type
+
++ List
+ - Could store different R objects(vectors, matrices, dates, data frames, factors and many more)
+ - No coercion
+ - Loss of some functionality that vectors and matrices offered
+ - calculus with lists is far less straightforward due to the lack of predefined structure that lists have to follow.
+
+### Create list
+
+> **list()**
+
+``` r
+> c("Rsome times", 190, 5)
+
+> list("Rsome times", 190, 5)
+[[1]]
+[1] "Rsome times"
+[[2]]
+[1] 190
+[[3]]
+[1] 5
+[1] "Rsome times" "190" "5"
+
+> song <- list("Rsome times", 190, 5)
+> is.list(song)
+[1] TRUE
+```
+
+### Name list
+
+``` r
+> song <- list("Rsome times", 190, 5)
+> names(song) <- c("title", "duration", "track")
+
+> song
+$title # the indices in double square brackets have changed to the names of the list elements 
+[1] "Rsome times"
+$duration
+[1] 190
+$track
+[1] 5
+```
+
+One-line approach
+
+> **list(name = value...)**
+``` r
+> song <- list(title = "Rsome times",
+ duration = 190,
+ track = 5)
+```
+
+Better way to print list
+
+> **str()**
+
+``` r
+> str(song)
+List of 3
+ $ title : chr "Rsome times"
+ $ duration: num 190
+ $ track : num 5
+```
+
+### List in List
+
+``` r
+> similar_song <- list(title = "R you on time?",
+ duration = 230)
+> song <- list(title = "Rsome times",
+ duration = 190, track = 5,
+ similar = similar_song) # list in list
+
+> str(song)
+List of 4
+ $ title : chr "Rsome times"
+ $ duration: num 190
+ $ track : num 5
+ $ similar :List of 2
+ ..$ title : chr "R you on time?"
+ ..$ duration: num 230
+```
+
+## Subset and Extend Lists
+
+Note, the printout of list is given by `str()` function.
+
+### `[` versus `[[`
+
+An example: the song list
+
+``` r
+> similar_song <- list(title = "R you on time?",
+ duration = 230)
+> song <- list(title = "Rsome times",
+ duration = 190, track = 5,
+ similar = similar_song)
+
+> song
+List of 4
+ $ title : chr "Rsome times"
+ $ duration: num 190
+ $ track : num 5
+ $ similar :List of 2
+ ..$ title : chr "R you on time?"
+ ..$ duration: num 230
+```
+
+
+> `[` returns to a list
+> 
+> `[[` returns to the value
+
+``` r
+> song[1]
+List of 1
+ $ title: chr "Rsome times"
+
+> song[[1]]
+[1] "Rsome times"
+
+> song[c(1, 3)] # also returns a list
+List of 2
+ $ title: chr "Rsome times"
+ $ track: num 5
+```
+
+A `[[` Error
+
+``` r
+> song[[c(1, 3)]] # double brackets are only to select single elements from a list.
+Error in song[[c(1, 3)]] :
+ subscript out of bounds
+
+> song[[1]][[3]] #  take the first element from the song list, and from that list, take the third element.
+Error in song[[1]][[3]] :
+ subscript out of bounds
+# tip: above two are equal expressions.
+
+# Thus
+
+> song[[4]][[1]]
+[1] "R you on time?"
+
+> song[[c(4, 1)]]
+[1] "R you on time?"
+```
+
+The double brackets are **only to select single elements** from a list.
+
+### Subset by names
+
+``` r
+> song[["duration"]] # with double quotes
+[1] 190
+
+> song["duration"] # select a list
+List of 1
+ $ duration: num 190
+
+> song[c("duration", "similar")] # select several lists
+List of 2
+ $ duration: num 190
+ $ similar :List of 2
+ ..$ title : chr "R you on time?"
+ ..$ duration: num 230
+```
+
+### Subset by logicals
+
+``` r
+> song[c(FALSE, TRUE, TRUE, FALSE)]
+List of 2
+ $ duration: num 190
+ $ track : num 5
+
+> song[[c(FALSE, TRUE, TRUE, FALSE)]] # which throws a error because R can't recognize the expression.
+Error : attempt to select less than one element
+
+> song[[F]][[T]][[T]][[F]]
+Error : attempt to select less than one element
+```
+
+### $ and extending
+
+It works just the same as the double brackets but **only works on named** lists.
+
+``` r
+# select a element
+> song$duration
+[1] 190
+
+# add a new element
+> friends <- c("Kurt", "Florence",
+ "Patti", "Dave")
+> song$sent <- friends
+
+> song
+List of 5
+ $ title : chr "Rsome times"
+ $ duration: num 190
+ $ track : num 5
+ $ similar :List of 2
+ ..$ title : chr "R you on time?"
+ ..$ duration: num 230
+ $ sent : chr [1:4] "Kurt" "Florence" "Patti" "Dave"
+
+> song[["sent"]] <- friends # This is another way to add new elements
+```
+
+Add elements to embedded lists.
+
+``` r
+> song$similar$reason <- "too long"
+> song
+List of 5
+ $ title : chr "Rsome times"
+ $ duration: num 190
+ $ track : num 5
+ $ similar :List of 3
+ ..$ title : chr "R you on time?"
+ ..$ duration: num 230
+ ..$ reason : chr "too long" # new element in the embedded list
+ $ sent : chr [1:4] "Kurt" "Florence" "Patti" "Dave"
+``` 
+
+### Wrap-up
+
++ `[[` or `[` ?
+ - `[[` to select list element
+ - `[` results in sublist
+
++ `[[` and `$` to subset and extend lists
+
+## Extra knowledge from lab
+
+c()
+
+: We can even use the c() function to add an element
+> shining_list <- c(shining_list, my_opinion = "Love it!")
+
+vector in list
+
+: if we want to add an entire vector as an element to the list
+> shining_list_ext <- c(shining_list, opinions = c("Love it!", "Hate it!"))
+: This will return 
+ ``` r
+ > shining_list_ext
+ $title
+ [1] "The Shining"
+
+ $actors
+ [1] "Jack Nicholson"   "Shelley Duvall"   "Danny Lloyd"      "Scatman   Crothers"
+ [5] "Barry Nelson"    
+
+ $reviews
+ [1] Good    OK      Good    Perfect Bad     Perfect Good   
+ Levels: Bad < OK < Good < Perfect
+
+ $opinions1
+ [1] "Love it!"
+
+ $opinions2
+ [1] "Hate it!"
+ ```
+
+: Thus, we'd better surround the elements you want to add to the list in another list() function. 
+
+ ``` r
+ c(shining_list, 
+     list(my_opinion = "Love it!",
+       your_opinion = "Hate it!"))
+
+ c(shining_list, 
+     list(c("Love it!", "Hate it"!)))
+ ```
+
+
+## Further readings
+
++ [r-project.org/Lists](https://cran.r-project.org/doc/manuals/R-intro.html#Lists)
+
++ [R-tutorials/List](http://www.r-tutor.com/r-introduction/list)
+
+# Module 6: Data Frame
