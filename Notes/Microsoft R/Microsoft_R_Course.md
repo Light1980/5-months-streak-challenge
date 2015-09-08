@@ -1271,3 +1271,149 @@ vector in list
 + [R-tutorials/List](http://www.r-tutor.com/r-introduction/list)
 
 # Module 6: Data Frame
+
+## Explore the Data Frame
+
+### Datasets
+
++ Observation
+
++ Variables
+
++ Emample: Datasets
+
+ - each person = **observation**
+ - properties (name, age …) = **variables **
+ 
+         |name|age|child|
+         |--|--|--|
+         |Pete|30|TRUE|
+         |Frank|21|TRUE|
+         |Hehe|25|TRUE|
+             
++ Matrix? Need different types
+
++ List? Not very practical
+
+### Data Frame
+
++ Specifically for datasets
+
++ **Rows = observations** (persons)
+
++ **Columns = variables** (age, name, …)
+
++ Contain **elements of different types**
+
++ Elements in **same column**: same type
+
+### Create Data Frame
+
+Usually, we don't need create data frame manually.
+
++ Import from data source
+
++ CSV file
+
++ Relational Database (e.g. SQL)
+
++ Software packages (Excel, SPSS …)
+
+### Create Data Frame Manually
+
+> **data.frame()**
+
+``` r
+> name <- c("Anne", "Pete", "Frank", "Julia", "Cath")
+> age <- c(28, 30, 21, 39, 35)
+> child <- c(FALSE, TRUE, TRUE, FALSE, TRUE)
+> df <- data.frame(name, age, child)
+
+> df
+ name age child # column names match variable names
+1 Anne 28 FALSE
+2 Pete 30 TRUE
+3 Frank 21 TRUE
+4 Julia 39 FALSE
+5 Cath 35 TRUE
+```
+
+### Name Data Frame
+
+``` r
+> names(df) <- c("Name", "Age", "Child") # names() function
+> df
+ Name Age Child
+1 Anne 28 FALSE
+2 Pete 30 TRUE
+ ...
+5 Cath 35 TRUE
+
+> df <- data.frame(Name = name, Age = age, Child = child) # inline-name
+> df
+ Name Age Child
+1 Anne 28 FALSE
+2 Pete 30 TRUE
+ ...
+5 Cath 35 TRUE
+```
+
+Like in matrices, it's also possible to **name the rows of the data frame**, but that's generally **not a good idea**.
+
+### Data Frame Structure
+
++ Data frame is **actually a list** containing all vectors of the same length.
+
++ Strings & factor coercion.
+
+> **stringsAsFactors = FALSE**
+
+``` r
+> str(df)
+'data.frame': 5 obs. of 3 variables:
+ $ Name : Factor w/ 5 levels "Anne","Cath",..: 1 5 3 4 2 # Factor instead of character
+ $ Age : num 28 30 21 39 35
+ $ Child: logi FALSE TRUE TRUE FALSE TRUE
+
+> data.frame(name[-1], age, child)
+Error : arguments imply differing number of rows: 4, 5
+
+> df <- data.frame(name, age, child,
+ stringsAsFactors = FALSE)
+
+> str(df)
+'data.frame': 5 obs. of 3 variables:
+ $ name : chr "Anne" "Pete" "Frank" "Julia" ...
+ $ age : num 28 30 21 39 35
+ $ child: logi FALSE TRUE TRUE FALSE TRUE
+```
+
+A requirement that is not present for lists is that **the length of the vectors you put** in the list **has to be equal**.
+
+## Subset - Extend - Sort Data Frames
+
+### Subset Data Frame
+
++ Subsetting syntax from matrices and lists
+
++ [ from matrices
+
++ [[ and $ from lists
+
+### Example: people
+
+``` r
+> name <- c("Anne", "Pete", "Frank", "Julia", "Cath")
+> age <- c(28, 30, 21, 39, 35)
+> child <- c(FALSE, TRUE, TRUE, FALSE, TRUE)
+> people <- data.frame(name, age, child,
+ stringsAsFactors = FALSE)
+
+> people
+ name age child
+1 Anne 28 FALSE
+2 Pete 30 TRUE
+3 Frank 21 TRUE
+4 Julia 39 FALSE
+5 Cath 35 TRUE
+```
