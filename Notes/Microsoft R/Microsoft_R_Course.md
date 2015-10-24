@@ -381,6 +381,8 @@ R is smart enough to see that the vector of logicals you passed it is shorter th
 
 + [r-project/vectors](https://cran.r-project.org/doc/manuals/R-intro.html#Simple-manipulations-numbers-and-vectors)
 
+---
+
 # Module 3: Matrix
 
 ## Create and Name Matrices
@@ -810,6 +812,8 @@ Element-wise calculus
 
 + [ats.ucla.edu/matrices](http://www.ats.ucla.edu/stat/r/library/matrix_alg.htm): Here the concept of working with matrices in R is once again explained and some more technical examples are also discussed
 
+---
+
 # Module 4: Factors
 
 ## Factors
@@ -976,6 +980,8 @@ Levels: S < M < L
 + [r-project/factors](https://cran.r-project.org/doc/manuals/R-intro.html#Factors)
 
 + [stat.ethz.chse/factors](https://stat.ethz.ch/R-manual/R-devel/library/base/html/factor.html)
+
+---
 
 # Module 5: Lists
 
@@ -1270,6 +1276,8 @@ vector in list
 
 + [R-tutorials/List](http://www.r-tutor.com/r-introduction/list)
 
+---
+
 # Module 6: Data Frame
 
 ## Explore the Data Frame
@@ -1417,3 +1425,209 @@ A requirement that is not present for lists is that **the length of the vectors 
 4 Julia 39 FALSE
 5 Cath 35 TRUE
 ```
+
+### Subset Data Frame ~ Matrix
+
+``` r
+> people[3,2]
+[1] 21
+
+> people[3,"age"]
+[1] 21
+
+> people[3,] # Result is a data frame with a single observation, because there has to be a way to store the different types. 
+ name age child
+3 Frank 21 TRUE
+
+> people[,"age"] # Result is a vector
+[1] 28 30 21 39 35
+```
+
+Select multiple information
+
+``` r
+> people[c(3, 5), c("age", "child")]
+ age child
+3 21 TRUE
+5 35 TRUE
+
+> people[2] # This gives the age column as a "data.frame" due to the syntax of list. However, In matrix this will return a value searched column by column from left to right.
+ age
+1 28
+2 30
+3 21
+4 39
+5 35
+```
+
+### Data Frame ~ List
+
+A **vector** generated.
+``` r
+> people$age
+[1] 28 30 21 39 35
+
+> people[["age"]]
+[1] 28 30 21 39 35
+
+> people[[2]]
+[1] 28 30 21 39 35
+```
+
+A **data.frame** generated.
+
+``` r
+> people["age"]
+ age
+1 28
+2 30
+3 21
+4 39
+5 35
+
+> people[2]
+ age
+1 28
+2 30
+3 21
+4 39
+5 35
+```
+
+### Extend Data Frame
+
++ Add columns = add variables
+
++ Add rows = add observations
+
+Add columns
+
++ List approach
+  > **XX$YY**
+  > **XX[[YY]]**
+
+ ``` r
+ > height <- c(163, 177, 163, 162, 157)
+ > people$height <- height
+ > people[["height"]] <- height
+ 
+ > people
+  name age child height
+ 1 Anne 28 FALSE 163
+ 2 Pete 30 TRUE 177
+ 3 Frank 21 TRUE 163
+ 4 Julia 39 FALSE 162
+ 5 Cath 35 TRUE 157
+ ```
+
++ Matrix approach
+
+ > **cbind()**
+
+ ``` r
+ > weight <- c(74, 63, 68, 55, 56)
+
+ > cbind(people, weight)
+  name age child height weight
+ 1 Anne 28 FALSE 163 74
+ 2 Pete 30 TRUE 177 63
+ 3 Frank 21 TRUE 163 68
+ 4 Julia 39 FALSE 162 55
+ 5 Cath 35 TRUE 157 56
+ ```
+Add rows
+
+``` r
+> tom <- data.frame("Tom", 37, FALSE, 183)
+> rbind(people, tom)
+Error : names do not match previous names # Thus we need some changes
+
+> tom <- data.frame(name = "Tom", age = 37,
+ child = FALSE, height = 183)
+> rbind(people, tom)
+ name age child height
+1 Anne 28 FALSE 163
+2 Pete 30 TRUE 177
+3 Frank 21 TRUE 163
+4 Julia 39 FALSE 162
+5 Cath 35 TRUE 157
+6 Tom 37 FALSE 183
+```
+
+### Sorting
+> **order(\**)**
+``` r
+> sort(people$age)
+[1] 21 28 30 35 39 # But it doesn't help us...
+
+> ranks <- order(people$age)
+> ranks
+[1] 3 1 2 5 4
+> people$age
+[1] 28 30 21 39 35
+
+# 21 is lowest: its index, 3, comes first in ranks
+# 28 is second lowest: its index, 1, comes second in ranks
+# 39 is highest: its index, 4, comes last in ranks
+```
+
+Than we can re-order the data.frame
+``` r
+> people[ranks, ]
+ name age child height
+3 Frank 21 TRUE 163
+1 Anne 28 FALSE 163
+2 Pete 30 TRUE 177
+5 Cath 35 TRUE 157
+4 Julia 39 FALSE 162
+```
+
+> **decreasing = TRUE**
+
+``` r
+> people[order(people$age, decreasing = TRUE), ]
+ name age child height
+4 Julia 39 FALSE 162
+5 Cath 35 TRUE 157
+2 Pete 30 TRUE 177
+1 Anne 28 FALSE 163
+3 Frank 21 TRUE 163
+```
+
+### Extra knowledge from lab
+
+Select multiple rows or columns
+
+> **dataframe[n:m, n:m]**
+
+Example: Planets
+
+``` r
+> planets_df
+     name               type diameter rotation has_rings
+1 Mercury Terrestrial planet    0.382    58.64     FALSE
+2   Venus Terrestrial planet    0.949  -243.02     FALSE
+3   Earth Terrestrial planet    1.000     1.00     FALSE
+4    Mars Terrestrial planet    0.532     1.03     FALSE
+5 Jupiter          Gas giant   11.209     0.41      TRUE
+6  Saturn          Gas giant    9.449     0.43      TRUE
+7  Uranus          Gas giant    4.007    -0.72      TRUE
+```
+
+Instead of having to define a vector `rings_vector`, which we then use to subset `planets_df`, we could've also used:
+
+> **subset()**
+``` r
+subset(planets_df, subset = has_rings == TRUE)
+```
+or
+``` r
+planets_df[planets_df$has_rings == TRUE, ]
+```
+
+
+## Further Readings
+
++ [r-project.org/Data-frames](https://cran.r-project.org/doc/manuals/R-intro.html#Data-frames)
+
++ [r-introduction/data-frame](r-introduction/data-frame)
